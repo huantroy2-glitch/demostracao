@@ -39,10 +39,7 @@ export function woodDoorTexture() {
   }
   // Raised panels.
   g.lineWidth = 6;
-  for (const [x, y, w, h] of [
-    [34, 40, 188, 190],
-    [34, 280, 188, 190],
-  ]) {
+  for (const [x, y, w, h] of [[34, 40, 188, 190], [34, 280, 188, 190]] as const) {
     g.strokeStyle = "rgba(25,12,6,0.45)";
     g.strokeRect(x, y, w, h);
     g.strokeStyle = "rgba(255,220,180,0.12)";
