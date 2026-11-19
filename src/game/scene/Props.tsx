@@ -14,7 +14,7 @@ export function Props({ world, homeId }: { world: World; homeId: string }) {
   const gltfs = useGLTF(KEYS.map((k) => MODEL_URLS[k]));
   const group = useMemo(() => {
     const scenes = {} as Record<ModelKey, THREE.Object3D>;
-    KEYS.forEach((k, i) => (scenes[k] = gltfs[i].scene));
+    KEYS.forEach((k, i) => (scenes[k] = gltfs[i]!.scene));
     const near: Placement[] = world.placements.filter((p) => !SKY.includes(p.model));
     const far: Placement[] = world.placements.filter((p) => SKY.includes(p.model));
     const g = new THREE.Group();
@@ -51,8 +51,8 @@ export function Poles({ world }: { world: World }) {
     const lines = [world.poles.filter((p) => p.z > 5), world.poles.filter((p) => p.z <= 5)];
     for (const line of lines) {
       for (let i = 0; i < line.length - 1; i++) {
-        const a = line[i];
-        const bb = line[i + 1];
+        const a = line[i]!;
+        const bb = line[i + 1]!;
         const along = line === lines[0] ? "x" : "z";
         for (const off of [-0.75, 0, 0.75]) {
           const pts: THREE.Vector3[] = [];
@@ -97,16 +97,18 @@ export function Poles({ world }: { world: World }) {
 
 function mergeAll(parts: THREE.BufferGeometry[]) {
   let count = 0;
-  for (const p of parts) count += p.attributes.position.count;
+  for (const p of parts) count += p.attributes["position"]!.count;
   const pos = new Float32Array(count * 3);
   const nor = new Float32Array(count * 3);
   const uv = new Float32Array(count * 2);
   let o = 0;
   for (const p of parts) {
-    pos.set(p.attributes.position.array as Float32Array, o * 3);
-    if (p.attributes.normal) nor.set(p.attributes.normal.array as Float32Array, o * 3);
-    if (p.attributes.uv) uv.set(p.attributes.uv.array as Float32Array, o * 2);
-    o += p.attributes.position.count;
+    pos.set(p.attributes["position"]!.array as Float32Array, o * 3);
+    const normal = p.attributes["normal"];
+    if (normal) nor.set(normal.array as Float32Array, o * 3);
+    const texCoord = p.attributes["uv"];
+    if (texCoord) uv.set(texCoord.array as Float32Array, o * 2);
+    o += p.attributes["position"]!.count;
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
@@ -126,8 +128,8 @@ export function BoundaryWalls({ world }: { world: World }) {
       const h = w.maxY - w.minY;
       const g = new THREE.BoxGeometry(sx, h, sz);
       // World-scaled UVs so the stucco does not stretch.
-      const uv = g.attributes.uv;
-      const n = g.attributes.normal;
+      const uv = g.attributes["uv"]!;
+      const n = g.attributes["normal"]!;
       for (let i = 0; i < uv.count; i++) {
         const horiz = Math.abs(n.getX(i)) > 0.5 ? sz : sx;
         uv.setXY(i, (uv.getX(i) * horiz) / 4, (uv.getY(i) * h) / 4);

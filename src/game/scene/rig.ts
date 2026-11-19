@@ -77,17 +77,17 @@ export function prepareClips(clips: THREE.AnimationClip[]) {
       const count = v.length / 3;
       if (count < 2) continue;
       const mean = [0, 0, 0];
-      for (let i = 0; i < count; i++) for (let a = 0; a < 3; a++) mean[a] += Math.abs(v[i * 3 + a]) / count;
+      for (let i = 0; i < count; i++) for (let a = 0; a < 3; a++) mean[a] = mean[a]! + Math.abs(v[i * 3 + a]!) / count;
       const isRoot = t.name.startsWith("root.");
       const up = mean.indexOf(Math.max(...mean));
-      const T = t.times[count - 1] - t.times[0] || 1;
+      const T = t.times[count - 1]! - t.times[0]! || 1;
       for (let a = 0; a < 3; a++) {
         if (!isRoot && a === up) continue;
-        const start = v[a];
-        const drift = v[(count - 1) * 3 + a] - start;
+        const start = v[a]!;
+        const drift = v[(count - 1) * 3 + a]! - start;
         for (let i = 0; i < count; i++) {
-          const k = (t.times[i] - t.times[0]) / T;
-          v[i * 3 + a] -= drift * k;
+          const k = (t.times[i]! - t.times[0]!) / T;
+          v[i * 3 + a] = v[i * 3 + a]! - drift * k;
         }
       }
     }
@@ -295,11 +295,11 @@ export class CharacterRig {
   private locomotion(target: Record<ClipKey, number>, s: number, dt: number) {
     const pts: [ClipKey, number][] = [["idle", 0], ...LOCO];
     if (s <= 0.05) target.idle = 1;
-    else if (s >= pts[pts.length - 1][1]) target.sprint = 1;
+    else if (s >= pts[pts.length - 1]![1]) target.sprint = 1;
     else {
       for (let i = 0; i < pts.length - 1; i++) {
-        const [ka, sa] = pts[i];
-        const [kb, sb] = pts[i + 1];
+        const [ka, sa] = pts[i]!;
+        const [kb, sb] = pts[i + 1]!;
         if (s >= sa && s <= sb) {
           const k = (s - sa) / (sb - sa);
           target[ka] = 1 - k;

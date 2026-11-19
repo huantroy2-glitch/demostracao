@@ -44,7 +44,7 @@ function flatShape(outer: [number, number][], holes: [number, number][][], y: nu
   g.rotateX(-Math.PI / 2);
   g.translate(0, y, 0);
   // World-space UVs (metres).
-  const pos = g.attributes.position;
+  const pos = g.attributes["position"]!;
   const uv = new Float32Array(pos.count * 2);
   for (let i = 0; i < pos.count; i++) {
     uv[i * 2] = pos.getX(i);
@@ -60,8 +60,8 @@ function curbGeometry(pts: [number, number][], y0: number, y1: number) {
   const uv: number[] = [];
   let run = 0;
   for (let i = 0; i < pts.length; i++) {
-    const [ax, az] = pts[i];
-    const [bx, bz] = pts[(i + 1) % pts.length];
+    const [ax, az] = pts[i]!;
+    const [bx, bz] = pts[(i + 1) % pts.length]!;
     const len = Math.hypot(bx - ax, bz - az);
     pos.push(ax, y0, az, bx, y0, bz, bx, y1, bz, ax, y0, az, bx, y1, bz, ax, y1, az);
     uv.push(run, 0, run + len, 0, run + len, 0.12, run, 0, run + len, 0.12, run, 0.12);
@@ -75,13 +75,10 @@ function curbGeometry(pts: [number, number][], y0: number, y1: number) {
 }
 
 function markingsGeometry() {
-  const quads: number[][] = [];
+  const quads: [number, number, number, number][] = [];
   const quad = (x0: number, z0: number, x1: number, z1: number) => quads.push([x0, z0, x1, z1]);
   // Double yellow line on the avenue (broken at the junction).
-  for (const [a, b] of [
-    [-160, -5.5],
-    [5.5, 160],
-  ]) {
+  for (const [a, b] of [[-160, -5.5], [5.5, 160]] as const) {
     quad(a, -0.22, b, -0.12);
     quad(a, 0.12, b, 0.22);
   }
@@ -121,16 +118,16 @@ function poolGeometry() {
   // Floor segments + step risers.
   const xs = [minX, minX + 0.6, minX + 1.2, minX + 1.8, maxX];
   for (let i = 0; i < xs.length - 1; i++) {
-    const y = poolFloor((xs[i] + xs[i + 1]) / 2);
-    const g = new THREE.PlaneGeometry(xs[i + 1] - xs[i], maxZ - minZ);
+    const y = poolFloor((xs[i]! + xs[i + 1]!) / 2);
+    const g = new THREE.PlaneGeometry(xs[i + 1]! - xs[i]!, maxZ - minZ);
     g.rotateX(-Math.PI / 2);
-    g.translate((xs[i] + xs[i + 1]) / 2, y, (minZ + maxZ) / 2);
+    g.translate((xs[i]! + xs[i + 1]!) / 2, y, (minZ + maxZ) / 2);
     parts.push(g);
     if (i < xs.length - 2) {
-      const yNext = poolFloor((xs[i + 1] + xs[i + 2]) / 2);
+      const yNext = poolFloor((xs[i + 1]! + xs[i + 2]!) / 2);
       const riser = new THREE.PlaneGeometry(maxZ - minZ, y - yNext);
       riser.rotateY(Math.PI / 2);
-      riser.translate(xs[i + 1], (y + yNext) / 2, (minZ + maxZ) / 2);
+      riser.translate(xs[i + 1]!, (y + yNext) / 2, (minZ + maxZ) / 2);
       parts.push(riser);
     }
   }

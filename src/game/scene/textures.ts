@@ -39,10 +39,7 @@ export function woodDoorTexture() {
   }
   // Raised panels.
   g.lineWidth = 6;
-  for (const [x, y, w, h] of [
-    [34, 40, 188, 190],
-    [34, 280, 188, 190],
-  ]) {
+  for (const [x, y, w, h] of [[34, 40, 188, 190], [34, 280, 188, 190]] as const) {
     g.strokeStyle = "rgba(25,12,6,0.45)";
     g.strokeRect(x, y, w, h);
     g.strokeStyle = "rgba(255,220,180,0.12)";
@@ -73,8 +70,8 @@ export function stuccoTexture(base: string) {
     g.save();
     g.translate(60 + r() * 300, 260 + r() * 140);
     g.rotate(-0.15 + r() * 0.3);
-    g.fillStyle = ["rgba(40,110,60,0.55)", "rgba(30,30,40,0.5)", "rgba(150,50,120,0.4)"][i % 3];
-    g.fillText(["BP", "ALMA", "VP"][Math.floor(r() * 3)], 0, 0);
+    g.fillStyle = ["rgba(40,110,60,0.55)", "rgba(30,30,40,0.5)", "rgba(150,50,120,0.4)"][i % 3]!;
+    g.fillText(["BP", "ALMA", "VP"][Math.floor(r() * 3)]!, 0, 0);
     g.restore();
   }
   return toTexture(c);

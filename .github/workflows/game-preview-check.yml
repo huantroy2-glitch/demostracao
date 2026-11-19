@@ -1,0 +1,32 @@
+name: Game preview checks
+
+on:
+  push:
+    branches:
+      - fix/game-preview-compilation
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: TypeScript
+        run: bunx tsc --noEmit
+
+      - name: Production build
+        run: bun run build
