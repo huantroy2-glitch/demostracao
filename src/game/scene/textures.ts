@@ -73,8 +73,8 @@ export function stuccoTexture(base: string) {
     g.save();
     g.translate(60 + r() * 300, 260 + r() * 140);
     g.rotate(-0.15 + r() * 0.3);
-    g.fillStyle = ["rgba(40,110,60,0.55)", "rgba(30,30,40,0.5)", "rgba(150,50,120,0.4)"][i % 3];
-    g.fillText(["BP", "ALMA", "VP"][Math.floor(r() * 3)], 0, 0);
+    g.fillStyle = ["rgba(40,110,60,0.55)", "rgba(30,30,40,0.5)", "rgba(150,50,120,0.4)"][i % 3]!;
+    g.fillText(["BP", "ALMA", "VP"][Math.floor(r() * 3)]!, 0, 0);
     g.restore();
   }
   return toTexture(c);
