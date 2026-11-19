@@ -451,9 +451,6 @@ export function stepPlayer(p: PlayerState, input: PlayerInput, boxes: Box[], dt:
     case "land":
       setAnim(p, "hardLand");
       break;
-    case "swim":
-      setAnim(p, "swim");
-      break;
     default:
       setAnim(p, p.crouch ? "crouch" : p.landOverlay > 0 ? "land" : "move");
   }
