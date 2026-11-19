@@ -214,8 +214,8 @@ export function buildWorld(): World {
   const roofs = ["#5a3a2c", "#4a4038", "#6b4a35", "#3f3a36", "#704030"];
   let wi = 0;
   const houseTint = () => {
-    const w = walls[wi % walls.length];
-    const r = roofs[wi % roofs.length];
+    const w = walls[wi % walls.length]!;
+    const r = roofs[wi % roofs.length]!;
     wi++;
     return { Main: w, Bricks: w, Light: "#efe4cc", RoofBricks: r, White: "#e9e1cf", Dark: "#3b3330" };
   };
@@ -255,14 +255,14 @@ export function buildWorld(): World {
   const carColours = ["#1f4a2a", "#5a1a1e", "#c9b48a", "#d9d6cf", "#18191c", "#6b2f1a", "#2c3e5a"];
   let ci = 0;
   const car = (model: "carSedan" | "carSedan2" | "carCoupe", x: number, z: number, rot: number) => {
-    const c = carColours[ci++ % carColours.length];
+    const c = carColours[ci++ % carColours.length]!;
     const bodyMats: Record<string, string[]> = {
       carSedan: ["Blue"],
       carSedan2: ["LightBlue"],
       carCoupe: ["Orange", "DarkOrange"],
     };
     const tint: Record<string, string> = {};
-    for (const m of bodyMats[model]) tint[m] = c;
+    for (const m of bodyMats[model]!) tint[m] = c;
     return place(model, x, z, rot, tint);
   };
   car("carSedan", -38, -3.5, HALF_PI);
@@ -325,7 +325,7 @@ export function buildWorld(): World {
       (bx) => x < bx.minX - 1.2 || x > bx.maxX + 1.2 || z < bx.minZ - 1.2 || z > bx.maxZ + 1.2,
     );
     if (!free || isRoad(x, z) || inRect(POOL_DECK, x, z)) continue;
-    place(palmModels[Math.floor(rng() * palmModels.length)], x, z, Math.floor(rng() * 4) * HALF_PI);
+    place(palmModels[Math.floor(rng() * palmModels.length)]!, x, z, Math.floor(rng() * 4) * HALF_PI);
   }
 
   // Telephone poles with sagging wires along the avenue and the cul-de-sac.
