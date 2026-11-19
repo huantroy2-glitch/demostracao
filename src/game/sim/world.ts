@@ -204,17 +204,17 @@ export function buildWorld(): World {
   const placements: Placement[] = [];
   let n = 0;
   const place = (model: ModelKey, x: number, z: number, rot: number, tint?: Record<string, string>, y = 0) => {
-    const p: Placement = { id: `${model}-${n++}`, model, x, y, z, rot, scale: CATALOG[model].scale, tint };
+    const p: Placement = { id: `${model}-${n++}`, model, x, y, z, rot, scale: CATALOG[model].scale, ...(tint ? { tint } : {}) };
     placements.push(p);
     return p;
   };
 
   // Stucco palette pulled from the reference shots: peach, sand, faded mint, cream, terracotta.
-  const walls = ["#c98f6a", "#d8b98c", "#9fb59a", "#e3d3b0", "#b5745a", "#c9a27a", "#a8a089"];
+  const wallColors = ["#c98f6a", "#d8b98c", "#9fb59a", "#e3d3b0", "#b5745a", "#c9a27a", "#a8a089"];
   const roofs = ["#5a3a2c", "#4a4038", "#6b4a35", "#3f3a36", "#704030"];
   let wi = 0;
   const houseTint = () => {
-    const w = walls[wi % walls.length]!;
+    const w = wallColors[wi % wallColors.length]!;
     const r = roofs[wi % roofs.length]!;
     wi++;
     return { Main: w, Bricks: w, Light: "#efe4cc", RoofBricks: r, White: "#e9e1cf", Dark: "#3b3330" };
