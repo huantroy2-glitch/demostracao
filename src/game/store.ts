@@ -7,6 +7,10 @@ type UIState = {
   locked: boolean;
   prompt: string | null;
   money: number;
+  clock: number;
+  playerX: number;
+  playerZ: number;
+  playerYaw: number;
   dialog: Dialog | null;
   toast: { text: string; id: number } | null;
   showHelp: boolean;
@@ -18,6 +22,10 @@ export const useUI = create<UIState>((set) => ({
   locked: false,
   prompt: null,
   money: 0,
+  clock: 18 * 60 + 5,
+  playerX: 0,
+  playerZ: -58,
+  playerYaw: Math.PI,
   dialog: null,
   toast: null,
   showHelp: true,
