@@ -67,6 +67,7 @@ function Runtime({ game }: { game: GameState }) {
     const p = game.player;
     const input = game.input;
     const ui = useUI.getState();
+    let focus: Interactable | null = game.focus;
 
     if (ui.started) {
       if (input.locked || input.dragging) {
@@ -88,9 +89,10 @@ function Runtime({ game }: { game: GameState }) {
         input.wheel = 0;
       }
 
-      const focus = nearestInteraction(game);
+      focus = nearestInteraction(game);
       game.focus = focus;
 
+      const wasTalking = game.talkingTo !== null;
       const escapePressed = consume(input, "Escape");
       const interactPressed = consume(input, "KeyE");
       if (escapePressed && game.talkingTo) {
@@ -111,7 +113,7 @@ function Runtime({ game }: { game: GameState }) {
       let sitInteract = false;
       if (p.mode === "sit") {
         sitInteract = interactPressed;
-      } else if (interactPressed && !game.talkingTo && focus) {
+      } else if (interactPressed && !wasTalking && !game.talkingTo && focus) {
         switch (focus.kind) {
           case "door":
             game.doorTarget = game.doorTarget > 0.5 ? 0 : 1;
