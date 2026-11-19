@@ -7,7 +7,7 @@ function formatClock(minutes: number) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
-function MiniMap({ x = 0, z = -58 }: { x?: number; z?: number }) {
+function MiniMap({ x = 0, z = -58, yaw = Math.PI }: { x?: number; z?: number; yaw?: number }) {
   const px = Math.max(4, Math.min(96, ((x + 60) / 120) * 100));
   const py = Math.max(4, Math.min(116, ((z + 100) / 128) * 120));
   return (
@@ -21,7 +21,7 @@ function MiniMap({ x = 0, z = -58 }: { x?: number; z?: number }) {
         <circle cx="50" cy="63" r="13" className="game-minimap__park" />
         <circle cx="50" cy="63" r="4" className="game-minimap__pool" />
         <circle cx={px} cy={py} r="3.2" className="game-minimap__player" />
-        <path d={`M${px} ${py - 6} l-2.5 5 h5 z`} className="game-minimap__arrow" />
+        <path d={`M${px} ${py - 6} l-2.5 5 h5 z`} className="game-minimap__arrow" transform={`rotate(${(yaw * 180) / Math.PI} ${px} ${py})`} />
       </svg>
       <div className="game-minimap__footer"><span>AVENIDA</span><span>PARQUE</span></div>
     </div>
@@ -33,6 +33,9 @@ export function GameHud({ onStart }: { onStart: () => void }) {
   const locked = useUI((s) => s.locked);
   const prompt = useUI((s) => s.prompt);
   const money = useUI((s) => s.money);
+  const playerX = useUI((s) => s.playerX);
+  const playerZ = useUI((s) => s.playerZ);
+  const playerYaw = useUI((s) => s.playerYaw);
   const clock = useUI((s) => s.clock);
   const dialog = useUI((s) => s.dialog);
   const toast = useUI((s) => s.toast);
@@ -56,7 +59,7 @@ export function GameHud({ onStart }: { onStart: () => void }) {
         <div className="game-stat"><span>HORA</span><strong>{formatClock(clock)}</strong></div>
       </div>
 
-      {started && <MiniMap />}
+      {started && <MiniMap x={playerX} z={playerZ} yaw={playerYaw} />}
 
       {started && showHelp && !dialog && (
         <div className="game-help">
