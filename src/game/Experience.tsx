@@ -150,10 +150,10 @@ function Runtime({ game }: { game: GameState }) {
       }
 
       const playerInput: PlayerInput = {
-        moveX: Number(held(input, "KeyD", "ArrowRight")) - Number(held(input, "KeyA", "ArrowLeft")),
-        moveY: Number(held(input, "KeyW", "ArrowUp")) - Number(held(input, "KeyS", "ArrowDown")),
+        moveX: game.talkingTo ? 0 : Number(held(input, "KeyD", "ArrowRight")) - Number(held(input, "KeyA", "ArrowLeft")),
+        moveY: game.talkingTo ? 0 : Number(held(input, "KeyW", "ArrowUp")) - Number(held(input, "KeyS", "ArrowDown")),
         camYaw: game.cam.yaw,
-        run: held(input, "ShiftLeft", "ShiftRight"),
+        run: !game.talkingTo && held(input, "ShiftLeft", "ShiftRight"),
         crouchPressed: consume(input, "KeyC", "ControlLeft"),
         jumpPressed: consume(input, "Space"),
         rollPressed: consume(input, "KeyQ"),
@@ -171,7 +171,7 @@ function Runtime({ game }: { game: GameState }) {
       game.clock = (18 * 60 + 5 + game.time * 1.25) % (24 * 60);
       if (game.time - hudClockAt.current > 0.35) {
         hudClockAt.current = game.time;
-        useUI.getState().set({ clock: game.clock });
+        useUI.getState().set({ clock: game.clock, playerX: p.x, playerZ: p.z, playerYaw: p.facing });
       }
     } else {
       input.mouseDX = 0;
@@ -327,7 +327,7 @@ export function GameExperience() {
     useUI.getState().set({ started: true, clock: game.clock });
     try {
       const lockRequest = canvasRef.current?.requestPointerLock();
-      if (lockRequest && "catch" in lockRequest) void lockRequest.catch(() => undefined);
+      if (lockRequest instanceof Promise) void lockRequest.catch(() => undefined);
     } catch {
       // Pointer lock is optional; click-and-drag mouse look remains available.
     }
