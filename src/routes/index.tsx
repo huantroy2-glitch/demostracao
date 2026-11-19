@@ -1,1 +1,19 @@
-aW1wb3J0IHsgY3JlYXRlRmlsZVJvdXRlIH0gZnJvbSAiQHRhbnN0YWNrL3JlYWN0LXJvdXRlciI7CgpleHBvcnQgY29uc3QgUm91dGUgPSBjcmVhdGVGaWxlUm91dGUoIi8iKSh7CiAgaGVhZDogKCkgPT4gKHsKICAgIG1ldGE6IFsKICAgICAgeyB0aXRsZTogIlRlbGEgZW0gYnJhbmNvIiB9LAogICAgICB7IG5hbWU6ICJkZXNjcmlwdGlvbiIsIGNvbnRlbnQ6ICJVbWEgdGVsYSBlbSBicmFuY28sIHByb250YSBwYXJhIGNvbWXDp2FyLiIgfSwKICAgICAgeyBwcm9wZXJ0eTogIm9nOnRpdGxlIiwgY29udGVudDogIlRlbGEgZW0gYnJhbmNvIiB9LAogICAgICB7IHByb3BlcnR5OiAib2c6ZGVzY3JpcHRpb24iLCBjb250ZW50OiAiVW1hIHRlbGEgZW0gYnJhbmNvLCBwcm9udGEgcGFyYSBjb21lw6dhci4iIH0sCiAgICAgIHsgcHJvcGVydHk6ICJvZzp0eXBlIiwgY29udGVudDogIndlYnNpdGUiIH0sCiAgICAgIHsgbmFtZTogInR3aXR0ZXI6Y2FyZCIsIGNvbnRlbnQ6ICJzdW1tYXJ5IiB9LAogICAgXSwKICB9KSwKICBjb21wb25lbnQ6IEluZGV4LAp9KTsKCmZ1bmN0aW9uIEluZGV4KCkgewogIHJldHVybiA8bWFpbiBjbGFzc05hbWU9Im1pbi1oLXNjcmVlbiBiZy1iYWNrZ3JvdW5kIiAvPjsKfQo=
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Tela em branco" },
+      { name: "description", content: "Uma tela em branco, pronta para começar." },
+      { property: "og:title", content: "Tela em branco" },
+      { property: "og:description", content: "Uma tela em branco, pronta para começar." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: Index,
+});
+
+function Index() {
+  return <main className="min-h-screen bg-background" />;
+}
