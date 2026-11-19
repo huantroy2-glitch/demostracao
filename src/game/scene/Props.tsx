@@ -108,7 +108,7 @@ function mergeAll(parts: THREE.BufferGeometry[]) {
     if (normal) nor.set(normal.array as Float32Array, o * 3);
     const texCoord = p.attributes["uv"];
     if (texCoord) uv.set(texCoord.array as Float32Array, o * 2);
-    o += p.attributes.position.count;
+    o += p.attributes["position"]!.count;
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
