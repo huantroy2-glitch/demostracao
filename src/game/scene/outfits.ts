@@ -106,8 +106,8 @@ export function buildOutfitGeometry(mesh: THREE.SkinnedMesh, o: Outfit) {
   mesh.updateMatrixWorld(true);
   const src = mesh.geometry;
   const geo = src.clone();
-  const pos = src.attributes.position;
-  const nor = src.attributes.normal;
+  const pos = src.attributes["position"]!;
+  const nor = src.attributes["normal"]!;
   const m = mesh.matrixWorld;
   const scale = m.getMaxScaleOnAxis();
   const outPos = new Float32Array(pos.count * 3);
