@@ -60,8 +60,8 @@ function curbGeometry(pts: [number, number][], y0: number, y1: number) {
   const uv: number[] = [];
   let run = 0;
   for (let i = 0; i < pts.length; i++) {
-    const [ax, az] = pts[i];
-    const [bx, bz] = pts[(i + 1) % pts.length];
+    const [ax, az] = pts[i]!;
+    const [bx, bz] = pts[(i + 1) % pts.length]!;
     const len = Math.hypot(bx - ax, bz - az);
     pos.push(ax, y0, az, bx, y0, bz, bx, y1, bz, ax, y0, az, bx, y1, bz, ax, y1, az);
     uv.push(run, 0, run + len, 0, run + len, 0.12, run, 0, run + len, 0.12, run, 0.12);
@@ -75,7 +75,7 @@ function curbGeometry(pts: [number, number][], y0: number, y1: number) {
 }
 
 function markingsGeometry() {
-  const quads: number[][] = [];
+  const quads: [number, number, number, number][] = [];
   const quad = (x0: number, z0: number, x1: number, z1: number) => quads.push([x0, z0, x1, z1]);
   // Double yellow line on the avenue (broken at the junction).
   for (const [a, b] of [
