@@ -44,7 +44,7 @@ function flatShape(outer: [number, number][], holes: [number, number][][], y: nu
   g.rotateX(-Math.PI / 2);
   g.translate(0, y, 0);
   // World-space UVs (metres).
-  const pos = g.attributes.position;
+  const pos = g.attributes["position"]!;
   const uv = new Float32Array(pos.count * 2);
   for (let i = 0; i < pos.count; i++) {
     uv[i * 2] = pos.getX(i);
@@ -78,10 +78,7 @@ function markingsGeometry() {
   const quads: [number, number, number, number][] = [];
   const quad = (x0: number, z0: number, x1: number, z1: number) => quads.push([x0, z0, x1, z1]);
   // Double yellow line on the avenue (broken at the junction).
-  for (const [a, b] of [
-    [-160, -5.5],
-    [5.5, 160],
-  ]) {
+  for (const [a, b] of [[-160, -5.5], [5.5, 160]] as const) {
     quad(a, -0.22, b, -0.12);
     quad(a, 0.12, b, 0.22);
   }
