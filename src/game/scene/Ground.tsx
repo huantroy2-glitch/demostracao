@@ -121,16 +121,16 @@ function poolGeometry() {
   // Floor segments + step risers.
   const xs = [minX, minX + 0.6, minX + 1.2, minX + 1.8, maxX];
   for (let i = 0; i < xs.length - 1; i++) {
-    const y = poolFloor((xs[i] + xs[i + 1]) / 2);
-    const g = new THREE.PlaneGeometry(xs[i + 1] - xs[i], maxZ - minZ);
+    const y = poolFloor((xs[i]! + xs[i + 1]!) / 2);
+    const g = new THREE.PlaneGeometry(xs[i + 1]! - xs[i]!, maxZ - minZ);
     g.rotateX(-Math.PI / 2);
-    g.translate((xs[i] + xs[i + 1]) / 2, y, (minZ + maxZ) / 2);
+    g.translate((xs[i]! + xs[i + 1]!) / 2, y, (minZ + maxZ) / 2);
     parts.push(g);
     if (i < xs.length - 2) {
-      const yNext = poolFloor((xs[i + 1] + xs[i + 2]) / 2);
+      const yNext = poolFloor((xs[i + 1]! + xs[i + 2]!) / 2);
       const riser = new THREE.PlaneGeometry(maxZ - minZ, y - yNext);
       riser.rotateY(Math.PI / 2);
-      riser.translate(xs[i + 1], (y + yNext) / 2, (minZ + maxZ) / 2);
+      riser.translate(xs[i + 1]!, (y + yNext) / 2, (minZ + maxZ) / 2);
       parts.push(riser);
     }
   }
