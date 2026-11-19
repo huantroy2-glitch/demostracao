@@ -14,7 +14,7 @@ export function Props({ world, homeId }: { world: World; homeId: string }) {
   const gltfs = useGLTF(KEYS.map((k) => MODEL_URLS[k]));
   const group = useMemo(() => {
     const scenes = {} as Record<ModelKey, THREE.Object3D>;
-    KEYS.forEach((k, i) => (scenes[k] = gltfs[i].scene));
+    KEYS.forEach((k, i) => (scenes[k] = gltfs[i]!.scene));
     const near: Placement[] = world.placements.filter((p) => !SKY.includes(p.model));
     const far: Placement[] = world.placements.filter((p) => SKY.includes(p.model));
     const g = new THREE.Group();
@@ -51,8 +51,8 @@ export function Poles({ world }: { world: World }) {
     const lines = [world.poles.filter((p) => p.z > 5), world.poles.filter((p) => p.z <= 5)];
     for (const line of lines) {
       for (let i = 0; i < line.length - 1; i++) {
-        const a = line[i];
-        const bb = line[i + 1];
+        const a = line[i]!;
+        const bb = line[i + 1]!;
         const along = line === lines[0] ? "x" : "z";
         for (const off of [-0.75, 0, 0.75]) {
           const pts: THREE.Vector3[] = [];
