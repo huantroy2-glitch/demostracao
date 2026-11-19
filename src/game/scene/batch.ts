@@ -41,7 +41,7 @@ function bake(src: THREE.BufferGeometry, matrix: THREE.Matrix4, local: THREE.Mat
   if (cut) {
     const kept: number[] = [];
     for (let i = 0; i < index.length; i += 3) {
-      if (inside[index[i]] && inside[index[i + 1]] && inside[index[i + 2]]) continue;
+      if (inside[index[i]!]! && inside[index[i + 1]!]! && inside[index[i + 2]!]!) continue;
       kept.push(index[i], index[i + 1], index[i + 2]);
     }
     index = kept;
@@ -83,7 +83,7 @@ export function buildBatch(
         ? mesh.geometry.groups
         : [{ start: 0, count: mesh.geometry.index?.count ?? mesh.geometry.attributes.position.count, materialIndex: 0 }];
       for (const gg of geoGroups) {
-        const base = mats[gg.materialIndex ?? 0] as THREE.MeshStandardMaterial;
+        const base = mats[gg.materialIndex ?? 0]! as THREE.MeshStandardMaterial;
         const tint = pl.tint?.[base.name];
         const key = `${pl.model}|${base.name}|${tint ?? ""}`;
         let entry = groups.get(key);
