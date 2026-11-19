@@ -7,9 +7,9 @@ type Cut = { minX: number; maxX: number; minY: number; maxY: number; minZ: numbe
 
 /** Plain float geometry (position, normal, uv) transformed into world space; optional triangles removed. */
 function bake(src: THREE.BufferGeometry, matrix: THREE.Matrix4, local: THREE.Matrix4, cut?: Cut) {
-  const pos = src.attributes.position;
-  const nor = src.attributes.normal;
-  const uv = src.attributes.uv;
+  const pos = src.attributes["position"]!;
+  const nor = src.attributes["normal"];
+  const uv = src.attributes["uv"];
   const n = pos.count;
   const p = new Float32Array(n * 3);
   const nn = new Float32Array(n * 3);
@@ -42,7 +42,7 @@ function bake(src: THREE.BufferGeometry, matrix: THREE.Matrix4, local: THREE.Mat
     const kept: number[] = [];
     for (let i = 0; i < index.length; i += 3) {
       if (inside[index[i]!]! && inside[index[i + 1]!]! && inside[index[i + 2]!]!) continue;
-      kept.push(index[i], index[i + 1], index[i + 2]);
+      kept.push(index[i]!, index[i + 1]!, index[i + 2]!);
     }
     index = kept;
   }
@@ -81,7 +81,7 @@ export function buildBatch(
       const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
       const geoGroups = mesh.geometry.groups.length
         ? mesh.geometry.groups
-        : [{ start: 0, count: mesh.geometry.index?.count ?? mesh.geometry.attributes.position.count, materialIndex: 0 }];
+        : [{ start: 0, count: mesh.geometry.index?.count ?? mesh.geometry.attributes["position"]!.count, materialIndex: 0 }];
       for (const gg of geoGroups) {
         const base = mats[gg.materialIndex ?? 0]! as THREE.MeshStandardMaterial;
         const tint = pl.tint?.[base.name];
